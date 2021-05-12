@@ -1,7 +1,7 @@
-const ballSpeed = 0.5;
-const ballCount = 50;
-const minBallRadius = 3;
-const maxBallRadius = 5;
+const ballSpeed = 1;
+const ballCount =50;
+const minBallRadius = 10;
+const maxBallRadius = 25;
 
 
 // Canvas class
