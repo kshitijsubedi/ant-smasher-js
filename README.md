@@ -1,6 +1,6 @@
 # LeapfrogInternship
 
-- Vanilla JS Image Slider
+- Vanilla JS Ant Smasher
 
 ### Deployed here :
-https://kshitijsubedi.github.io/JS-Image-Carousel/
+https://kshitijsubedi.github.io/ant-smasher-js/
