@@ -1,19 +1,36 @@
-const ballSpeed = 2;
-const ballCount = 50;
-const minBallRadius = 3;
-const maxBallRadius = 5;
+const ballSpeed = 0.1;
+const ballCount = 5;
+const minBallRadius = 5;
+const maxBallRadius = 7;
+
 
 function Canvas (){
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     this.ctx=ctx
+    this.canvas=canvas
     this.height = ctx.canvas.height;
     this.width = ctx.canvas.width;
+    this.ctx.imageSmoothingEnabled = true;
+    this.ctx.imageSmoothingQuality = 'high';
+    this.canvas.addEventListener('click',function(evt){
+        var rect = canvas.getBoundingClientRect();
+        var mouseX =(evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width
+        var mouseY = (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
+        checkAnts(mouseX,mouseY)
+    })
 }
-Canvas.prototype.drawBalls = function (item)     {
-    this.ctx.beginPath();
-    this.ctx.arc(item.x,item.y,item.radius,0,Math.PI*2);
-    this.ctx.closePath();
+
+var checkAnts = function(mouseX,mouseY){
+    balls.forEach(function(ball,index){
+        if((Math.sqrt((mouseX-ball.x)**2+(mouseY-ball.y)**2))<ball.radius){
+            balls.splice(index,1)
+        }
+    })
+}
+
+Canvas.prototype.drawBalls = function (item)  {
+    canvas.ctx.drawImage(sprite,item.x-item.radius,item.y-item.radius,2*item.radius,2*item.radius);
     this.ctx.fillStyle=item.color;
     this.ctx.fill();
 }
@@ -77,6 +94,9 @@ Ball.prototype.updatePosition = function(height,width){
 
 const canvas = new Canvas();
 var balls = new Array();
+var sprite = new Image();
+sprite.src='./img/ant.png';
+
 for (let i=0; i <ballCount;i++){
     var randomX = Math.floor(Math.random()*canvas.height)
     var randomY = Math.floor(Math.random()*canvas.width)
@@ -85,7 +105,6 @@ for (let i=0; i <ballCount;i++){
 }
 
 function loop(){
-
     window.requestAnimationFrame(loop);
     canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
     for(let i = 0; i < balls.length;i ++) {
@@ -93,8 +112,8 @@ function loop(){
         canvas.drawBalls(ball)   
         ball.updatePosition(canvas.width, canvas.height);
     }
-    for (var i = 0; i < ballCount; i++){  
-        for (var j = 0; j < ballCount; j++) {
+    for (var i = 0; i < balls.length; i++){  
+        for (var j = 0; j < balls.length; j++) {
             if(i == j) {
                 continue;
             }
@@ -102,5 +121,6 @@ function loop(){
                 canvas.collision(balls[i],balls[j])
             }
     }}
+   
 }
 loop();
